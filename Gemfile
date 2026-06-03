@@ -4,7 +4,6 @@ source 'https://rubygems.org'
 
 # needed for Jekyll
 gem 'jekyll'
-gem 'sassc'  # Add this line - alternative to sass-embedded
 gem 'webrick'
 gem 'logger'
 gem 'base64'
