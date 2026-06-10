@@ -1,6 +1,8 @@
 filename,object_location,image_small,image_thumb
 210a.jpg,/objects/210a.jpg,/objects/small/210a_sm.jpg,/objects/thumbs/210a_th.jpg
 210b.jpg,/objects/210b.jpg,/objects/small/210b_sm.jpg,/objects/thumbs/210b_th.jpg
+cover_bless_me_ultima.jpg,/objects/cover_bless_me_ultima.jpg,/objects/small/cover_bless_me_ultima_sm.jpg,/objects/thumbs/cover_bless_me_ultima_th.jpg
+cover_the_village.png,/objects/cover_the_village.png,/objects/small/cover_the_village_sm.jpg,/objects/thumbs/cover_the_village_th.jpg
 cover_untouchable.jpg,/objects/cover_untouchable.jpg,/objects/small/cover_untouchable_sm.jpg,/objects/thumbs/cover_untouchable_th.jpg
 demo_001.jpg,/objects/demo_001.jpg,/objects/small/demo_001_sm.jpg,/objects/thumbs/demo_001_th.jpg
 demo_002.pdf,/objects/demo_002.pdf,/objects/small/demo_002_sm.jpg,/objects/thumbs/demo_002_th.jpg
