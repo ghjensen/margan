@@ -1,0 +1,31 @@
+{% comment %} 1. Find all relations for the current novel {% endcomment %}
+{% assign current_novel_id = page.objectid %}
+{% assign related_keywords = site.data.novel_keyword | where: "novel_id", current_novel_id %}
+
+{% comment %} 2. If there are keywords, display them {% endcomment %}
+{% if related_keywords.size > 0 %}
+<div class="card mb-4">
+  <div class="card-header">
+    <h3 class="h5 mb-0">Keyword Engagements</h3>
+  </div>
+  <div class="card-body">
+    <dl class="row mb-0">
+      {% for relation in related_keywords %}
+        
+        {% comment %} 3. Look up the specific keyword details from keyword.csv {% endcomment %}
+        {% assign kw_info = site.data.keyword | where: "id", relation.keyword_id | first %}
+        
+        {% comment %} 4. Print the keyword name as a link, and the engagement text {% endcomment %}
+<dt class="col-sm-3 text-md-end">
+  {% assign keyword_param = kw_info.keyword | url_param_escape %}
+  <a href="{{ '/browse.html' | relative_url }}#{{ keyword_param }}" class="text-decoration-none">
+    {{ kw_info.keyword }}
+  </a>
+</dt>
+<dd class="col-sm-9">{{ relation.engagement }}</dd>
+        
+      {% endfor %}
+    </dl>
+  </div>
+</div>
+{% endif %}
