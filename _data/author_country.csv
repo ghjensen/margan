@@ -1,0 +1,13 @@
+id,author_id,country_id,significance
+1,43,IND,major
+2,43,GBR,minor
+3,44,USA,major
+4,45,IND,major
+5,45,GBR,major
+6,45,USA,major
+7,46,USA,major
+8,46,FRA,major
+9,46,CHE,major
+10,47,USA,major
+11,47,GBR,major
+12,48,GBR,major

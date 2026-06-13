@@ -1,0 +1,34 @@
+id,religion
+1,Christianity-Protestant
+2,Christianity-Roman Catholic
+3,Christianity-Eastern Orthodox
+4,Christianity-Anglican
+5,Christianity-Other
+6,Judaism-Conservative
+7,Judaism-Orthodox
+8,Judaism-Liberal/Reform
+9,Islam-Sunni
+10,Islam-Shia
+11,Islam-Ibadhi
+12,Islam-Nation of Islam
+13,Islam-Alawite
+14,Islam-Ahmadiyya
+15,Buddhism-Mahayana
+16,Buddhism-Theravada
+17,Zoroastrian
+18,Hindu
+19,Sikh
+20,Shinto
+21,Bahai
+22,Taoism
+23,Confucianism
+24,Jain
+25,Syncretic Religions-Afro-Christian
+26,Syncretic Religions-Occult
+27,Syncretic Religions-Rastafarian
+28,Syncretic Religions-Pagan
+29,Animist-Native American
+30,Animist-African
+31,Non Affliated-Atheist
+32,Non Affliated-Spiritual but not religious
+33,Humanist
