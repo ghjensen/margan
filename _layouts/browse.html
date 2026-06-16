@@ -21,7 +21,7 @@ custom-foot: js/browse-js.html
                     {% assign cap-field = f.field | capitalize %}
                     <option value="{{ f.field }}">{{ f.facet_name | default: f.display_name | default: cap-field }}</option>
                     {% endfor %}
-                    <option value="display_template">Content Type</option>
+                    <!--<option value="display_template">Content Type</option>-->
                     {% if site.data.theme.advanced-search == true %}
                     <option value="" disabled><hr></option>
                     <option value="advanced">Advanced Search...</option>{% endif %}
