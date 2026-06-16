@@ -5,11 +5,11 @@ permalink: /about.html
 # include CollectionBuilder info at bottom
 credits: true
 # featured-image value can be one objectid for a photo object in this collection, a relative path to an image in this project, or a full url to any image. If left blank, no featured image will appear at top of About page.
-about-featured-image: demo_031
+about-featured-image: objects/mario-verduzco-xSdFf1Lcx6o-unsplash.jpg
 # set background-position for featured image, "center", "top", "bottom"
-position: bottom
+position: center
 # major heading to display over featured image
-heading: About the Collection
+heading: About MaRGAN
 # paragraph text below heading in featured image
 sub-heading: 
 # additional padding added to the feature to increase size. Give value in em or px, e.g. "5em".
@@ -18,22 +18,55 @@ padding: 6em
 # Look in _includes/feature for options to easily add features to the page
 ---
 
-## About CollectionBuilder CSV
+## Overview
 
-This demo collection features items from the University of Idaho Library's [Digital Collections](https://www.lib.uidaho.edu/digital/), and is build using [CollectionBuilder-CSV](https://github.com/CollectionBuilder/collectionbuilder-csv).
+### Novel Religion
+***Literary Representation and Re-imaging of Global Religious Practice***
 
-CollectionBuilder-CSV is a "Stand Alone" template for creating digital collection and exhibit websites using Jekyll, given:
+The Mapping Religion in the Global Anglophone Novel (MaRGAN) project unites two features of the twentieth century: the rise of the novel as a global form and religious change following the impact of modernity upon religious practice. The connection between the two has often been difficult to record because what *religion* means differs from scholar to scholar and from context to context.
 
-- a CSV of collection metadata
-- a folder of images, PDFs, audio, or video files
+The project thus defines the religious content of the novel through its connection with one or more of 32 keywords such as `ritual`, `omens & visions`, and `holy people`. This approach enables the project to expand the kinds of texts construed as relevant to considerations of religion rather than focusing on a genre closely identified with a religious tradition (i.e., the Catholic novel); it thus facilitates comparison between texts that approach religion differently, whether that difference is marked by opposing views of religion, familiarity with different religious traditions, or concentration on a particular aspect of the variety of phenomena collected under the term *religion*. The project not only challenges understandings of the novel as a secular form through attention to the sheer range of religious representations present in this corpus of novels but also argues that these representations are responses to ongoing religious change. As the project demonstrates, the novel is a cultural form in which authors reflect on the consequences of, need for, or ongoing role of religion in societies undergoing widespread transformation. The novel, in this way, becomes an agent of religious change, exploring what religion may do to and for societies.
 
-Driven by your collection metadata, the template generates engaging visualizations to browse and explore your objects.
-The resulting static site can be hosted on any basic web server.
+In its initial phase, MaRGAN will define a corpus of approximately 400 global anglophone novels published between 1890 and 1980 that engage with religion. The database powering the website categorizes these engagements using one or more pre-defined religious keywords (i.e., `ritual`) and annotates the novel’s relation to this keyword using free text. In addition, the database captures basic bibliographic information about the novels and biographic data about the author. The project thus assumes that the nature and value of a given representation of religion in a novel is responsive to the geographical, historical, and religious contexts of the author. 
 
-[CollectionBuilder](https://github.com/CollectionBuilder/) is an set of open source tools for creating digital collection and exhibit websites that are driven by metadata and powered by modern static web technology.
-See [CB Docs](https://collectionbuilder.github.io/cb-docs/) for detailed information.
+The data is visualised in three ways: a timeline (to allow for developments over the 100 years of the project); word clouds (to reveal the frequency of certain keywords with respect to religion in novels); and a map (to allow for exploration of the geographical global).
 
-{% include feature/image.html objectid="demo_001" width="75" %} 
+### Project Data
 
-<!-- IMPORTANT!!! DELETE this comment and the include below when you are finished editing this page for your collection. The include below introduces about page features. They will show up on your collection's about page until you delete it.  -->
-{% include cb/about_the_about.md %} 
+To date, the MaRGAN dataset features the following novels (listed in order of publication):
+{% include feature/timelinejs.html %}
+
+You can browse, search, and explore the novels and their metadata using various site features:
+- The [Browse](browse.html) page
+- Word clouds of novel [Keywords](keywords.html) and [Locations](locations.html)
+- A tabular [Timeline](timeline.html) of the novels
+- A [Map](map.html) of the novels
+- Project [Data](data.html) searches and downloads
+
+Information about the authors is also featured on the above pages and on dedicated Author pages (coming soon!).
+
+### Project Members
+
+#### Project Team
+- Elizabeth Anderson - *University of Aberdeen, UK*
+- Jamie Callison - *University of Agder, Norway*
+- Suzanne Hobson - *Queen Mary University of London, UK*
+- Graham Jensen - *Independent, Canada*
+- Mimi Winick - *Virginia Commonwealth University, USA*
+
+#### Advisory Board
+- J. Barton Scott - *University of Toronto, Canada*
+- Michael Allan - *University of Oregon, USA*
+- Kris J. Trujillo - *University of Chicago, USA*
+- Shuhita Bhattacharjee - *Indian Institute of Technology Hyderabad, India*
+- J. Winter Werner - *Wheaton College, MA, USA*
+- Alana Vincent - *Umeå University, Sweden*
+- Kees de Groot - *Tilburg University, Netherlands*
+
+## Acknowledgements
+
+We are grateful to the following students and individuals who assisted with data entry and other project tasks:
+
+## About this Website
+
+(To be added: a bit about Graham's work on the website, tools and workflows involved, etc.)
