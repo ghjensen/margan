@@ -7,7 +7,9 @@
 {%- assign fields = site.data.config-metadata | where_exp: 'item', 'item.display_name != nil' -%}
 <div id="item-metadata">
     <dl>
-        {% for f in fields %}{% if page[f.field] %}
+        {% for f in fields %}
+        
+        {% if page[f.field] %}
         <dt class="field">{{ f.display_name }}:</dt>
         <dd class="field-value">
             {% if f.browse_link == "true" %}
@@ -20,6 +22,61 @@
             {% else %}
             {{ page[f.field] | replace: '""','"' }}{% endif %}
         </dd>
-        {% endif %}{% endfor %}
+        {% endif %}
+
+        {% comment %} Catch the subject field row to inject custom metadata right after it {% endcomment %}
+        {% if f.field == 'subject' %}
+            
+            {% comment %} Custom Relational Field: Religion with Significance Badges {% endcomment %}
+            {% assign rel_rows = site.data.novel_religion | where: "novel_id", page.objectid %}
+            {% if rel_rows.size > 0 %}
+            <dt class="field">Religions:</dt>
+            <dd class="field-value">
+                {% for r in rel_rows %}
+                    {% assign rel_rec = site.data.religion | where: "id", r.religion_id | first %}
+                    {% if rel_rec %}
+                    <div class="mb-1">
+                        <a href="{{ '/browse.html' | relative_url }}#religion:{{ rel_rec.religion | downcase | url_encode }}">{{ rel_rec.religion }}</a>
+                        {% if r.significance and r.significance != "" %}
+                            {% if r.significance == 'major' %}
+                                {% assign rel_badge_class = 'bg-primary text-white' %}
+                            {% else %}
+                                {% assign rel_badge_class = 'bg-light text-dark border' %}
+                            {% endif %}
+                            <span class="badge {{ rel_badge_class }}" style="font-size: 0.75em; vertical-align: middle;">{{ r.significance }}</span>
+                        {% endif %}
+                    </div>
+                    {% endif %}
+                {% endfor %}
+            </dd>
+            {% endif %}
+
+            {% comment %} Custom Relational Field: Location with Significance Badges {% endcomment %}
+            {% assign country_rows = site.data.novel_country | where: "novel_id", page.objectid %}
+            {% if country_rows.size > 0 %}
+            <dt class="field">Locations:</dt>
+            <dd class="field-value">
+                {% for c in country_rows %}
+                    {% assign country_rec = site.data.country | where: "alpha-3-code", c.country_id | first %}
+                    {% if country_rec %}
+                    <div class="mb-1">
+                        <a href="{{ '/browse.html' | relative_url }}#location:{{ country_rec.country | downcase | url_encode }}">{{ country_rec.country }}</a>
+                        {% if c.significance and c.significance != "" %}
+                            {% if c.significance == 'major' %}
+                                {% assign loc_badge_class = 'bg-primary text-white' %}
+                            {% else %}
+                                {% assign loc_badge_class = 'bg-light text-dark border' %}
+                            {% endif %}
+                            <span class="badge {{ loc_badge_class }}" style="font-size: 0.75em; vertical-align: middle;">{{ c.significance }}</span>
+                        {% endif %}
+                    </div>
+                    {% endif %}
+                {% endfor %}
+            </dd>
+            {% endif %}
+
+        {% endif %}
+        
+        {% endfor %}
     </dl>
 </div>
