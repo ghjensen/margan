@@ -22,7 +22,31 @@
 /**
  * Initialize items array from Jekyll site data
  */
-var items = [
+ // Start customization to include religion data in items array
+{%- comment -%} Create lookup dictionary for religions with significance {%- endcomment -%}
+{%- assign religion_map = "" | split: "," -%}
+{%- for row in site.data.novel -%}
+    {%- assign rel_rows = site.data.novel_religion | where: "novel_id", row.objectid -%}
+    {%- assign rel_names = "" | split: "," -%}
+    {%- for r in rel_rows -%}
+        {%- comment -%} Lookup the religion record {%- endcomment -%}
+        {%- assign rel_rec = site.data.religion | where: "id", r.religion_id | first -%}
+        {%- if rel_rec -%}
+            {%- comment -%} Check if significance exists and format it in parentheses {%- endcomment -%}
+            {%- if r.significance and r.significance != "" -%}
+        {%- assign rel_display = rel_rec.religion | append: "--" | append: r.significance -%}
+    {%- else -%}
+        {%- assign rel_display = rel_rec.religion -%}
+    {%- endif -%}
+            {%- assign rel_names = rel_names | push: rel_display -%}
+        {%- endif -%}
+    {%- endfor -%}
+    {%- assign rel_string = rel_names | join: "; " -%}
+    {%- assign entry = row.objectid | append: "::" | append: rel_string -%}
+    {%- assign religion_map = religion_map | push: entry -%}
+{%- endfor -%}
+// End customization to include religion data in items array
+ var items = [
     {% for item in items %}
     { {% for f in fields %}{% if item[f.field] %}{{ f.field | escape | jsonify }}:{{ item[f.field] | strip | jsonify }}, {%- endif -%}{%- endfor -%}
         {% if item.image_thumb %}"img": {{ item.image_thumb | relative_url | jsonify }}, {%- endif -%} 
@@ -31,7 +55,9 @@ var items = [
         {% if item.image_alt_text %}"alt": {{ item.image_alt_text | escape | jsonify }}, {%- endif -%}
         "title":{{ item.title | strip | escape | jsonify }},
         {% if item.parentid %}"parent": {{ item.parentid | jsonify }}, {%- endif -%}
-        "id":{{ item.objectid | jsonify }} }{% unless forloop.last %},{% endunless %}{%- endfor -%}
+        "id":{{ item.objectid | jsonify }},
+        "religion": {% for map in religion_map %}{% assign parts = map | split: "::" %}{% if parts[0] == item.objectid %}{{ parts[1] | jsonify }}{% endif %}{% endfor %}
+    }{% unless forloop.last %},{% endunless %}{%- endfor -%}
 ];
 
 // Valid field names for URL-based searches
@@ -71,13 +97,36 @@ function makeCard(obj) {
         const thumbIcon = getIcon(obj.display_template, obj.format, "thumb");
         if(thumbIcon) card += `<p><a href="${itemHref}">${thumbIcon}</a></p>`;
     }
-    
+
     // Field data
     card += '<p class="card-text">';
     {% for f in fields %}{% unless f.hidden == 'true' %}
     if(obj[{{ f.field | jsonify }}]){
         {% if f.display_name %}card += '<strong>{{ f.display_name }}:</strong> ';{% endif %}
-        {% if f.btn == 'true' %}
+        
+        {% if f.field == 'religion' %}
+        // Add a line break immediately after the "Religion:" label
+        card += '<br>';
+        // Custom badge display for religion to show significance cleanly inline
+        const rels = obj.religion.split(';');
+        const links = rels.map(rel => {
+            const parts = rel.split('--');
+            const name = parts[0].trim();
+            const significance = parts[1] ? parts[1].trim() : null;
+            
+            // Clickable link targeting clean lowercase name for URL safety
+            let html = `<a href="{{ page.url | relative_url }}#religion:${encodeURIComponent(name.toLowerCase())}">${name}</a>`;
+            
+            // Add custom styled badge if major or minor weight exists
+            if (significance) {
+                const badgeClass = significance === 'major' ? 'bg-primary text-white' : 'bg-light text-dark border';
+                html += ` <span class="badge ${badgeClass}" style="font-size: 0.75em; vertical-align: middle;">${significance}</span>`;
+            }
+            return html;
+        });
+        card += links.join('<br>');
+        
+        {% elsif f.btn == 'true' %}
         const btns = obj[{{ f.field | jsonify }}].split(";");
         btns.forEach(btn => {
             if(btn.trim()) {

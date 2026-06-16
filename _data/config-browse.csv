@@ -1,7 +1,8 @@
 field,display_name,btn,hidden,sort_name,facet_name
 date,Date,,,Date Created
 description,,,true,
-creator,Creator,,,
-subject,Keyword,true
-location,Location,true,,,Location Depicted
+creator,Author,,,Author,Author
+subject,Keywords,true,,Keyword,Keyword
+location,Locations,true,,Location,Location
+religion,Religions,true,,Religion,Religion
 identifier,,,true,Identifier

@@ -1,5 +1,6 @@
 field,display_name,search
 date,Date,true
-creator,Creator,true
+creator,Author,true
 subject,Subjects,true
-location,Location,true
+religion,"Religions featured",true
+location,Locations,true

@@ -1,9 +1,9 @@
 id,novel_id,country_id,significance
-1,1,IND,major
-2,2,IND,major
-3,3,USA,major
-4,4,IND,major
-5,5,USA,major
-6,6,GBR,major
-7,6,IND,major
-8,7,GBR,major
+1,margan001,IND,major
+2,margan002,IND,major
+3,margan003,USA,major
+4,margan004,IND,major
+5,margan005,USA,major
+6,margan006,GBR,major
+7,margan006,IND,major
+8,margan007,GBR,major

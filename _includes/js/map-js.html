@@ -16,20 +16,37 @@
 <script>
 (function(){
     /* add collection map data */
-    var geodata = { "type": "FeatureCollection", "features": [ 
-    {% for item in items %}
-    { "type":"Feature", "geometry":{ "type":"Point", "coordinates":[{{ item.longitude | strip }},{{ item.latitude | strip }}] }, "properties":
-    { 
-        {% for f in fields %}{% if item[f.field] %}{{ f.field | escape | jsonify }}:{{ item[f.field] | strip | escape | jsonify }}, {%- endif -%}{%- endfor -%}
-        {% if item.image_thumb %}"img": {{ item.image_thumb | relative_url | jsonify }},{% endif %}
-        {% if item.display_template %}"template": {{ item.display_template | escape | jsonify }}, {%- endif -%}
-        {% if item.format %}"format": {{ item.format | escape | jsonify }}, {%- endif -%}
-        {% if item.image_alt_text %}"alt": {{ item.image_alt_text | escape | jsonify }}, {%- endif -%}
-        {% if item.parentid %}"parent": {{ item.parentid | jsonify }}, {%- endif -%}
-        "title": {{ item.title | escape | jsonify }},
-        "id": {{ item.objectid | jsonify }} 
-    } }{% unless forloop.last %}, {% endunless %}{% endfor %}
-    ]};
+    var geodata = { "type": "FeatureCollection", "features": [
+    {% assign feature_count = 0 %}
+    {% for row in site.data.novel_country %}
+        {% assign c = site.data.country | where: "alpha-3-code", row.country_id | first %}
+        {% assign item = site.data.novel | where: "objectid", row.novel_id | first %}
+        
+        {% if c.latitude and item %}
+            {% if feature_count > 0 %},{% endif %}
+            {
+                "type": "Feature",
+                "geometry": {
+                    "type": "Point",
+                    "coordinates": [{{ c.longitude | strip }}, {{ c.latitude | strip }}]
+                },
+                "properties": {
+                    "title": {{ item.title | jsonify }},
+                    {% if item.image_thumb and item.image_thumb != "" %}
+                    "img": {{ item.image_thumb | relative_url | jsonify }},
+                    {% endif %}
+                    "template": {{ item.display_template | jsonify }},
+                    "format": {{ item.format | jsonify }},
+                    {% for f in fields %}
+                    {{ f.field | jsonify }}: {{ item[f.field] | jsonify }},
+                    {% endfor %}
+                    "link": {{ item.objectid | jsonify }}
+                }
+            }
+            {% assign feature_count = feature_count | plus: 1 %}
+        {% endif %}
+    {% endfor %}
+]};
 
     /* check for url parameters and setup initial view options */ 
     let url = new URL(window.location);
@@ -65,7 +82,7 @@
     };
     L.control.layers(baseMaps).addTo(map);
     /* load base map */
-    {{ site.data.theme.map-base | default: 'Esri_WorldStreetMap' }}.addTo(map);
+    {{ site.data.theme.map-base | default: 'Esri_NatGeoWorldMap' }}.addTo(map);
 
     {% if site.data.theme.map-search == true %}
     /* add search, https://github.com/naomap/leaflet-fusesearch */
@@ -133,7 +150,37 @@
             '" >' + thumbImg + '</a></div><p>';
         {% for f in fields %}{% if f.display_name %}
         if (feature.properties[{{ f.field | escape | jsonify }}]) {
-            popupTemplate += '<strong>{{ f.display_name }}:</strong> ' + feature.properties[{{ f.field | escape | jsonify }}] + '<br>'; 
+            // Save the current field name and its data to variables for cleaner code
+            var fieldName = {{ f.field | escape | jsonify }};
+            var rawValue = feature.properties[fieldName];
+            
+            // 1. Timeline Date Linking
+            if (fieldName === 'date') {
+                var year = rawValue.trim();
+                // Build the timeline anchor (e.g., /timeline.html#y1935)
+                var dateLink = '<a href="{{ "/timeline.html" | relative_url }}#y' + year + '">' + year + '</a>';
+                popupTemplate += '<strong>{{ f.display_name }}:</strong> ' + dateLink + '<br>';
+                
+            // 2. Browse Page Linking (Subject, Religion, Location)
+            } else if (fieldName === 'subject' || fieldName === 'religion' || fieldName === 'location') {
+                var itemArray = rawValue.split(';');
+                var clickableLinks = [];
+                
+                for (var i = 0; i < itemArray.length; i++) {
+                    var itemTrimmed = itemArray[i].trim();
+                    if (itemTrimmed) {
+                        var urlHash = encodeURIComponent(itemTrimmed.toLowerCase());
+                        // Dynamically insert the fieldName so it outputs #location:india, #religion:hindu, etc.
+                        var linkHtml = '<a href="{{ "/browse.html" | relative_url }}#' + fieldName + ':' + urlHash + '">' + itemTrimmed + '</a>';
+                        clickableLinks.push(linkHtml);
+                    }
+                }
+                popupTemplate += '<strong>{{ f.display_name }}:</strong> ' + clickableLinks.join('; ') + '<br>';
+                
+            // 3. Standard Default Display (for everything else)
+            } else {
+                popupTemplate += '<strong>{{ f.display_name }}:</strong> ' + rawValue + '<br>'; 
+            }
         }
         {% endif %}{% endfor %}
         popupTemplate += '</p><div class="text-center"><a class="btn btn-light" href="' + itemHref + '" >View Item</a></div>';
