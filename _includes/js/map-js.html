@@ -40,7 +40,8 @@
                     {% for f in fields %}
                     {{ f.field | jsonify }}: {{ item[f.field] | jsonify }},
                     {% endfor %}
-                    "link": {{ item.objectid | jsonify }}
+                    "link": {{ item.objectid | jsonify }},
+                    "id": {{ item.objectid | jsonify }}
                 }
             }
             {% assign feature_count = feature_count | plus: 1 %}
