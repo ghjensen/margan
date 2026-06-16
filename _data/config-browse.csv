@@ -3,6 +3,6 @@ date,Date,,,Date Created
 description,,,true,
 creator,Author,,,Author,Author
 subject,Keywords,true,,Keyword,Keyword
-location,Locations,true,,Location,Location
 religion,Religions,true,,Religion,Religion
+location,Locations,true,,Location,Location
 identifier,,,true,Identifier
