@@ -33,8 +33,10 @@ The data is visualised in three ways: a timeline (to allow for developments over
 
 ### Project Data
 
-To date, the MaRGAN dataset features the following novels (listed in order of publication):
-{% include feature/timelinejs.html %}
+The MaRGAN dataset currently features {% assign total_novels = site.data.novel | where_exp: "item", "item.objectid != nil" | size %}
+<strong>{{ total_novels }}</strong> novels.
+ 
+{% include index/carousel.html %}
 
 You can browse, search, and explore the novels and their metadata using various site features:
 - The [Browse](browse.html) page
