@@ -5,7 +5,7 @@ permalink: /about.html
 # include CollectionBuilder info at bottom
 credits: true
 # featured-image value can be one objectid for a photo object in this collection, a relative path to an image in this project, or a full url to any image. If left blank, no featured image will appear at top of About page.
-about-featured-image: objects/mario-verduzco-xSdFf1Lcx6o-unsplash.jpg
+about-featured-image: objects/homepage_banner3.jpg
 # set background-position for featured image, "center", "top", "bottom"
 position: center
 # major heading to display over featured image
@@ -25,7 +25,9 @@ padding: 6em
 
 The Mapping Religion in the Global Anglophone Novel (MaRGAN) project unites two features of the twentieth century: the rise of the novel as a global form and religious change following the impact of modernity upon religious practice. The connection between the two has often been difficult to record because what *religion* means differs from scholar to scholar and from context to context.
 
-The project thus defines the religious content of the novel through its connection with one or more of 32 keywords such as `ritual`, `omens & visions`, and `holy people`. This approach enables the project to expand the kinds of texts construed as relevant to considerations of religion rather than focusing on a genre closely identified with a religious tradition (i.e., the Catholic novel); it thus facilitates comparison between texts that approach religion differently, whether that difference is marked by opposing views of religion, familiarity with different religious traditions, or concentration on a particular aspect of the variety of phenomena collected under the term *religion*. The project not only challenges understandings of the novel as a secular form through attention to the sheer range of religious representations present in this corpus of novels but also argues that these representations are responses to ongoing religious change. As the project demonstrates, the novel is a cultural form in which authors reflect on the consequences of, need for, or ongoing role of religion in societies undergoing widespread transformation. The novel, in this way, becomes an agent of religious change, exploring what religion may do to and for societies.
+The project thus defines the religious content of the novel through its connection with one or more of 32 keywords such as `ritual`, `omens & visions`, and `holy people`. This approach enables the project to expand the kinds of texts construed as relevant to considerations of religion rather than focusing on a genre closely identified with a religious tradition (i.e., the Catholic novel); it thus facilitates comparison between texts that approach religion differently, whether that difference is marked by opposing views of religion, familiarity with different religious traditions, or concentration on a particular aspect of the variety of phenomena collected under the term *religion*.
+
+The project not only challenges understandings of the novel as a secular form through attention to the sheer range of religious representations present in this corpus of novels but also argues that these representations are responses to ongoing religious change. As the project demonstrates, the novel is a cultural form in which authors reflect on the consequences of, need for, or ongoing role of religion in societies undergoing widespread transformation. The novel, in this way, becomes an agent of religious change, exploring what religion may do to and for societies.
 
 In its initial phase, MaRGAN will define a corpus of approximately 400 global anglophone novels published between 1890 and 1980 that engage with religion. The database powering the website categorizes these engagements using one or more pre-defined religious keywords (i.e., `ritual`) and annotates the novel’s relation to this keyword using free text. In addition, the database captures basic bibliographic information about the novels and biographic data about the author. The project thus assumes that the nature and value of a given representation of religion in a novel is responsive to the geographical, historical, and religious contexts of the author. 
 
@@ -35,7 +37,7 @@ The data is visualised in three ways: a timeline (to allow for developments over
 
 The MaRGAN dataset currently features {% assign total_novels = site.data.novel | where_exp: "item", "item.objectid != nil" | size %}
 <strong>{{ total_novels }}</strong> novels.
- 
+
 {% include index/carousel.html %}
 
 You can browse, search, and explore the novels and their metadata using various site features:
@@ -68,7 +70,10 @@ Information about the authors is also featured on the above pages and on dedicat
 ## Acknowledgements
 
 We are grateful to the following students and individuals who assisted with data entry and other project tasks:
+- (To be added)
+
+The feature image on the homepage was created using images by [PURI](https://unsplash.com/@puribranding?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText) and [Skye Studios](https://unsplash.com/@skyestudios?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText) on [Unsplash](https://unsplash.com).
 
 ## About this Website
 
-(To be added: a bit about Graham's work on the website, tools and workflows involved, etc.)
+(To be added: information outlining Graham's work on the website, tools and workflows involved, etc.)
