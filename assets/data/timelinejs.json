@@ -7,7 +7,7 @@
 {
     "title": {
         "media": {
-          "url": "{{ site.data.featured_item.src | absolute_url }}",
+          "url": "{{ '/objects/homepage_banner.jpg' | absolute_url }}",
           "alt": {{ site.data.featured_item.alt | jsonify }},
           "caption": {{ site.data.featured_item.title | jsonify }},
           "credit": {{ site.title | jsonify }}
