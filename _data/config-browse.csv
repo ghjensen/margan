@@ -1,6 +1,6 @@
 field,display_name,btn,hidden,sort_name,facet_name
 date,Date,,,Date Created
-creator,Author,,,Author,Author
+author_name,Author,true,false,false
 subject,Keywords,true,,Keyword,Keyword
 religion,Religions,true,,Religion,Religion
 location,Locations,true,,Location,Location

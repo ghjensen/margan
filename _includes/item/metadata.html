@@ -5,22 +5,36 @@
     
 {%- endcomment -%}
 {%- assign fields = site.data.config-metadata | where_exp: 'item', 'item.display_name != nil' -%}
-<div id="item-metadata">
+<div id=\"item-metadata\">
     <dl>
         {% for f in fields %}
         
+        {% comment %} Skip visual rendering of 'creator' to prevent duplication with our interactive author profile link {% endcomment %}
+        {% if f.field == 'creator' %}{% continue %}{% endif %}
+        
         {% if page[f.field] %}
-        <dt class="field">{{ f.display_name }}:</dt>
-        <dd class="field-value">
-            {% if f.browse_link == "true" %}
-            {% assign topics = page[f.field] | split: ";" %}
-            {% for t in topics %}
-            <a class="me-3" href="{{ t | strip | url_param_escape | prepend: ':' | prepend: f.field | prepend: '/browse.html#' | relative_url }}">{{ t | strip }}</a>
-            {% endfor %}
+        <dt class=\"field\">{{ f.display_name }}:</dt>
+        <dd class=\"field-value\">
+            {% if f.field == 'author_id' %}
+                {% comment %} Look up author details from author.csv using the current item's author_id {% endcomment %}
+                {% assign author_rec = site.data.author | where: "id", page.author_id | first %}
+                {% if author_rec %}
+                    <a href="{{ '/authors/' | append: page.author_id | append: '.html' | relative_url }}">
+                        {{ author_rec.given-names }} {{ author_rec.family-names }}
+                    </a>
+                {% else %}
+                    {{ page.author_id }}
+                {% endif %}
+            {% elsif f.browse_link == "true" %}
+                {% assign topics = page[f.field] | split: ";" %}
+                {% for t in topics %}
+                <a class="me-3" href="{{ t | strip | url_param_escape | prepend: ':' | prepend: f.field | prepend: '/browse.html#' | relative_url }}">{{ t | strip }}</a>
+                {% endfor %}
             {% elsif f.external_link == "true" %}
-            <a href="{{ page[f.field] }}">{{ page[f.field] }}</a>
+                <a href="{{ page[f.field] }}" target="_blank">{{ page[f.field] }}</a>
             {% else %}
-            {{ page[f.field] | replace: '""','"' }}{% endif %}
+                {{ page[f.field] | replace: '""','"' }}
+            {% endif %}
         </dd>
         {% endif %}
 

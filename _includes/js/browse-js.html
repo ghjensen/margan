@@ -70,8 +70,22 @@
     {%- assign location_map = location_map | push: entry -%}
 {%- endfor -%}
 
+// Customization to include author names in items array for easier searching
+{%- comment -%} Create lookup dictionary for authors {%- endcomment -%}
+{%- assign author_map = "" | split: "," -%}
+{%- for row in site.data.novel -%}
+    {%- assign author_rec = site.data.author | where: "id", row.author_id | first -%}
+    {%- if author_rec -%}
+        {%- assign author_string = author_rec.given-names | append: " " | append: author_rec.family-names -%}
+    {%- else -%}
+        {%- assign author_string = "" -%}
+    {%- endif -%}
+    {%- assign entry = row.objectid | append: "::" | append: author_string -%}
+    {%- assign author_map = author_map | push: entry -%}
+{%- endfor -%}
+
 // End customization to include religion and location data in items array
- var items = [
+var items = [
     {% for item in items %}
     { {% for f in fields %}{% if item[f.field] %}{{ f.field | escape | jsonify }}:{{ item[f.field] | strip | jsonify }}, {%- endif -%}{%- endfor -%}
         {% if item.image_thumb %}"img": {{ item.image_thumb | relative_url | jsonify }}, {%- endif -%} 
@@ -81,6 +95,8 @@
         "title":{{ item.title | strip | escape | jsonify }},
         {% if item.parentid %}"parent": {{ item.parentid | jsonify }}, {%- endif -%}
         "id":{{ item.objectid | jsonify }},
+        "author_id": {{ item.author_id | jsonify }},
+        "author_name": {% for map in author_map %}{% assign parts = map | split: "::" %}{% if parts[0] == item.objectid %}{{ parts[1] | jsonify }}{% endif %}{% endfor %},
         "religion": {% for map in religion_map %}{% assign parts = map | split: "::" %}{% if parts[0] == item.objectid %}{{ parts[1] | jsonify }}{% endif %}{% endfor %},
         "location": {% for map in location_map %}{% assign parts = map | split: "::" %}{% if parts[0] == item.objectid %}{{ parts[1] | jsonify }}{% endif %}{% endfor %}
     }{% unless forloop.last %},{% endunless %}{%- endfor -%}
@@ -127,10 +143,15 @@ function makeCard(obj) {
     // Field data
     card += '<p class="card-text">';
     {% for f in fields %}{% unless f.hidden == 'true' %}
-    if(obj[{{ f.field | jsonify }}]){
+    // Check for either the config field or our relational author name property
+    if(obj[{{ f.field | jsonify }}] || ('{{ f.field }}' === 'author_name' && obj.author_name)){
         {% if f.display_name %}card += '<strong>{{ f.display_name }}:</strong> ';{% endif %}
         
-        {% if f.field == 'religion' %}
+        {% if f.field == 'author_name' %}
+        // Custom link presentation to use the numerical author ID behind the scenes
+        card += `<a href="{{ '/authors/' | relative_url }}${obj.author_id}.html">${obj.author_name}</a>`;
+        
+        {%- elsif f.field == 'religion' %}
         // Custom badge display for religion to show significance cleanly inline
         card += '<br>'; 
         const rels = obj.religion.split(';');
@@ -365,7 +386,7 @@ function itemMatches(item, field, query, startDate, endDate) {
         // Search all fields 
         if (field === "all") {
             for (let k in item) {
-                if (k !== "img" && item[k] && item[k].toString().toUpperCase().includes(q)) {
+                if (k !== "img" && k !== "author_id" && item[k] && item[k].toString().toUpperCase().includes(q)) {
                     return true;
                 }
             }

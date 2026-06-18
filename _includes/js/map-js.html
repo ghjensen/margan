@@ -22,6 +22,9 @@
         {% assign c = site.data.country | where: "alpha-3-code", row.country_id | first %}
         {% assign item = site.data.novel | where: "objectid", row.novel_id | first %}
         
+        {% comment %} Look up the author from author.csv using the novel's author_id {% endcomment %}
+        {% assign author_rec = site.data.author | where: "id", item.author_id | first %}
+        
         {% if c.latitude and item %}
             {% if feature_count > 0 %},{% endif %}
             {
@@ -37,8 +40,14 @@
                     {% endif %}
                     "template": {{ item.display_template | jsonify }},
                     "format": {{ item.format | jsonify }},
+                    
+                    {% comment %} Core relational injection for authors {% endcomment %}
+                    "author_id": {{ item.author_id | jsonify }},
+                    {% assign author_rec = site.data.author | where: "id", item.author_id | first %}
+                    "author_name": {% if author_rec %}{{ author_rec.given-names | append: " " | append: author_rec.family-names | jsonify }}{% else %}""{% endif %},
+                    
                     {% for f in fields %}
-                    {{ f.field | jsonify }}: {{ item[f.field] | jsonify }},
+                    {% unless f.field == 'author_name' %}{{ f.field | jsonify }}: {{ item[f.field] | jsonify }},{% endunless %}
                     {% endfor %}
                     "link": {{ item.objectid | jsonify }},
                     "id": {{ item.objectid | jsonify }}
@@ -150,7 +159,8 @@
             feature.properties.title + '</a></h2><div class="text-center"><a href="' + itemHref + 
             '" >' + thumbImg + '</a></div><p>';
         {% for f in fields %}{% if f.display_name %}
-        if (feature.properties[{{ f.field | escape | jsonify }}]) {
+        // Check for either standard properties or our custom injected relational author string
+        if (feature.properties[{{ f.field | escape | jsonify }}] || ('{{ f.field }}' === 'author_name' && feature.properties.author_name)) {
             // Save the current field name and its data to variables for cleaner code
             var fieldName = {{ f.field | escape | jsonify }};
             var rawValue = feature.properties[fieldName];
@@ -162,7 +172,12 @@
                 var dateLink = '<a href="{{ "/timeline.html" | relative_url }}#y' + year + '">' + year + '</a>';
                 popupTemplate += '<strong>{{ f.display_name }}:</strong> ' + dateLink + '<br>';
                 
-            // 2. Browse Page Linking (Subject, Religion, Location)
+            // 2. Custom Author Profile Page Linking
+            } else if (fieldName === 'author_name') {
+                var authorLink = '<a href="{{ "/authors/" | relative_url }}' + feature.properties.author_id + '.html">' + feature.properties.author_name + '</a>';
+                popupTemplate += '<strong>{{ f.display_name }}:</strong> ' + authorLink + '<br>';
+                
+            // 3. Browse Page Linking (Subject, Religion, Location)
             } else if (fieldName === 'subject' || fieldName === 'religion' || fieldName === 'location') {
                 var itemArray = rawValue.split(';');
                 var clickableLinks = [];
@@ -178,7 +193,7 @@
                 }
                 popupTemplate += '<strong>{{ f.display_name }}:</strong> ' + clickableLinks.join('; ') + '<br>';
                 
-            // 3. Standard Default Display (for everything else)
+            // 4. Standard Default Display (for everything else)
             } else {
                 popupTemplate += '<strong>{{ f.display_name }}:</strong> ' + rawValue + '<br>'; 
             }
