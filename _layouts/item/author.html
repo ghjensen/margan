@@ -1,0 +1,188 @@
+---
+layout: default
+---
+{% assign author_id = page.id %}
+{% assign author_name = page.given-names | append: " " | append: page.family-names | strip %}
+
+<div class="container py-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ '/' | absolute_url }}">Home</a></li>
+            <li class="breadcrumb-item"><a href="{{ '/authors.html' | absolute_url }}">Authors</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{{ author_name }}</li>
+        </ol>
+    </nav>
+
+    <div class="row mb-5">
+        <div class="col-md-5 text-center">
+            <figure class="figure">
+                <img src="{{ '/objects/small/' | append: author_id | append: '.jpg' | absolute_url }}" class="figure-img img-fluid rounded" alt="Photograph of {{ author_name }}" width="400">
+                <figcaption class="figure-caption text-end text-center">Source: {{ page.image_source }}</figcaption>
+            </figure>
+        </div>
+
+        <div class="col-md-7">
+            <h1 class="mb-3">{{ author_name }}</h1>
+            <p class="lead">{{ page.birth_date }} &ndash; {{ page.death_date }}</p>
+            
+            {% if page.biography %}
+            <p>{{ page.biography }}</p>
+            {% endif %}
+
+            {% assign religions = site.data.author_religion | where: "author_id", author_id %}
+            {% if religions.size > 0 %}
+            <h5>Religious Affiliations</h5>
+            <ul class="list-unstyled mb-4">
+                {% for r in religions %}
+                {% assign rel_rec = site.data.religion | where: "id", r.religion_id | first %}
+                <li>
+                    {{ rel_rec.religion }} 
+                    <span class="badge {% if r.significance == 'major' %}bg-primary text-white{% else %}bg-secondary text-white{% endif %}">
+                        {{ r.significance | capitalize }}
+                    </span>
+                </li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+
+            {% if page.wikidata_id %}
+            <a href="https://www.wikidata.org/wiki/{{ page.wikidata_id }}" target="_blank" rel="noopener" class="btn btn-outline-secondary">
+                View Wikidata Entity
+            </a>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="row mb-5">
+        <div class="col-12">
+            <h3 class="border-bottom pb-2">Novels by {{ author_name }} in this Collection</h3>
+            {% assign author_novels = site.data.novel | where: "author_id", author_id %}
+            
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Thumbnail</th>
+                            <th>Title</th>
+                            <th>Year</th>
+                            <th>Keywords</th>
+                            <th>Link to Record</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for novel in author_novels %}
+                        <tr>
+                            <td style="width: 100px;">
+                                {% if novel.image_thumb %}
+                                <img src="{{ novel.image_thumb | absolute_url }}" alt="{{ novel.image_alt_text | default: novel.title }}" class="img-thumbnail" style="max-width: 100px;">
+                                {% else %}
+                                <span class="text-muted small">No image</span>
+                                {% endif %}
+                            </td>
+                            
+                            <td><strong>{{ novel.title }}</strong></td>
+                            <td>{{ novel.date }}</td>
+                            
+                            <td>
+                                {% assign keywords = novel.subject | split: ";" %}
+                                {% for word in keywords %}
+                                <a href="{{ '/browse.html' | absolute_url }}?q={{ word | strip | url_encode }}" class="btn btn-sm btn-outline-secondary m-1">
+                                    {{ word | strip }}
+                                </a>
+                                {% endfor %}
+                            </td>
+                            
+                            <td>
+                                <a href="{{ '/items/' | append: novel.objectid | append: '.html' | absolute_url }}" class="btn btn-sm btn-outline-primary">View Record</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-5">
+        <div class="col-12">
+            <h3 class="border-bottom pb-2">Associated Locations</h3>
+            <div id="authorMap" style="height: 400px; width: 100%; z-index: 1;"></div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12 d-flex justify-content-between">
+            {% assign all_authors = site.data.author | sort: "objectid" %}
+            {% for a in all_authors %}
+                {% if a.objectid == author_id %}
+                    {% assign prev_index = forloop.index0 | minus: 1 %}
+                    {% assign next_index = forloop.index0 | plus: 1 %}
+                    
+                    {% if forloop.first == false %}
+                        {% assign prev_author = all_authors[prev_index] %}
+                        <a href="{{ '/authors/' | append: prev_author.objectid | append: '.html' | absolute_url }}" class="btn btn-secondary">&laquo; Previous: {{ prev_author.name }}</a>
+                    {% else %}
+                        <div></div> {% endif %}
+
+                    {% if forloop.last == false %}
+                        {% assign next_author = all_authors[next_index] %}
+                        <a href="{{ '/authors/' | append: next_author.objectid | append: '.html' | absolute_url }}" class="btn btn-secondary">Next: {{ next_author.name }} &raquo;</a>
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+</div>
+<link rel="stylesheet" href="{{ '/assets/lib/leaflet/leaflet.css' | absolute_url }}">
+<script src="{{ '/assets/lib/leaflet/leaflet.js' | absolute_url }}"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    // 1. Fetch relevant data and cross-reference coordinates
+    {% assign author_locations = site.data.author_country | where: "author_id", author_id %}
+    
+    const locations = [
+        {% for loc in author_locations %}
+        {% assign country_rec = site.data.country | where: "alpha-3-code", loc.country_id | first %}
+        {% if country_rec %}
+        {
+            name: {{ country_rec.country | jsonify }},
+            lat: {{ country_rec.latitude }},
+            lng: {{ country_rec.longitude }},
+            significance: {{ loc.significance | jsonify }}
+        }{% unless forloop.last %},{% endunless %}
+        {% endif %}
+        {% endfor %}
+    ];
+
+    if (locations.length === 0) {
+        document.getElementById('authorMap').innerHTML = "<p class='text-muted mt-3'>No location data available for this author.</p>";
+        document.getElementById('authorMap').style.height = "auto";
+        return;
+    }
+
+    // 2. Initialize Map (Centered globally to start)
+    const map = L.map('authorMap').setView([20, 0], 2);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+
+    // 3. Add Markers & Calculate Bounds
+    const bounds = [];
+    locations.forEach(loc => {
+        if(loc.lat && loc.lng) {
+            let markerColor = loc.significance === 'major' ? 'blue' : 'gray';
+            let popupText = `<b>${loc.name}</b><br>Significance: ${loc.significance}`;
+            
+            let marker = L.marker([loc.lat, loc.lng]).addTo(map).bindPopup(popupText);
+            bounds.push([loc.lat, loc.lng]);
+        }
+    });
+
+    // 4. Auto-zoom to fit all markers
+    if (bounds.length > 0) {
+        map.fitBounds(bounds, { padding: [30, 30] });
+    }
+});
+</script>

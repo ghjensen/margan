@@ -1,38 +1,38 @@
-id,wikidata,family-names,given-names
-43,Q732434,Anand,Mulk Raj
-44,Q1326764,Anaya,Rudolfo
-45,Q5575294,Bhattacharya,Bhabani
-46,Q273210,Baldwin,James
-47,Q276028,Burnett,Frances Hodgson
-48,Q2235837,Butts,Mary
-49,Q171091,Dick,Phillip K.
-50,Q1565590,Desani,G.V.
-51,Q189119,Forster,E.M.
-52,Q7934,Herbert,Frank
-53,Q4818312,Hosain,Attia
-54,Q220480,Hurston,Zora Neale
-55,Q6882,Joyce,James
-56,Q160534,Kerouac,Jack
-57,Q2778027,Klein,A.M.
-58,Q4819165,Menen,Aubrey
-59,Q528576,Macaulay,Rose
-60,Q5203099,McNickle,D'Arcy
-61,Q461571,Mitchison,Naomi
-62,Q5268884,Mukerji,Dhan Gopal
-63,Q334252,Narayan,R.K.
-64,Q1398332,Powys,John Cowper
-65,Q272585,Pym,Barbara
-66,Q560735,Potok,Chaim
-67,Q1975074,Rao,Raja
-68,Q983544,Reed,Ishmael
-69,Q452282,Richler,Mordecai
-70,Q273001,Silko,Leslie Marmon
-71,Q233956,Spark,Muriel
-72,Q6439347,Satthianadhan,Krupabai
-73,Q2368953,Taubes,Susan
-74,Q302910,Thiong'o,Ngũgĩ wa
-75,Q361562,Tutuola,Amos
-76,Q454734,Underhill,Evelyn
-77,Q462270,Warner,Sylvia Townsend
-78,Q42511,Wells,H.G.
-79,Q3507232,Wynter,Sylvia
+id,wikidata,family-names,given-names,image_source
+43,Q732434,Anand,Mulk Raj,Open Library
+44,Q1326764,Anaya,Rudolfo,Open Library
+45,Q5575294,Bhattacharya,Bhabani,
+46,Q273210,Baldwin,James,
+47,Q276028,Burnett,Frances Hodgson,
+48,Q2235837,Butts,Mary,
+49,Q171091,Dick,Phillip K.,
+50,Q1565590,Desani,G.V.,
+51,Q189119,Forster,E.M.,
+52,Q7934,Herbert,Frank,
+53,Q4818312,Hosain,Attia,
+54,Q220480,Hurston,Zora Neale,
+55,Q6882,Joyce,James,
+56,Q160534,Kerouac,Jack,
+57,Q2778027,Klein,A.M.,
+58,Q4819165,Menen,Aubrey,
+59,Q528576,Macaulay,Rose,
+60,Q5203099,McNickle,D'Arcy,
+61,Q461571,Mitchison,Naomi,
+62,Q5268884,Mukerji,Dhan Gopal,
+63,Q334252,Narayan,R.K.,
+64,Q1398332,Powys,John Cowper,
+65,Q272585,Pym,Barbara,
+66,Q560735,Potok,Chaim,
+67,Q1975074,Rao,Raja,
+68,Q983544,Reed,Ishmael,
+69,Q452282,Richler,Mordecai,
+70,Q273001,Silko,Leslie Marmon,
+71,Q233956,Spark,Muriel,
+72,Q6439347,Satthianadhan,Krupabai,
+73,Q2368953,Taubes,Susan,
+74,Q302910,Thiong'o,Ngũgĩ wa,
+75,Q361562,Tutuola,Amos,
+76,Q454734,Underhill,Evelyn,
+77,Q462270,Warner,Sylvia Townsend,
+78,Q42511,Wells,H.G.,
+79,Q3507232,Wynter,Sylvia,
