@@ -150,6 +150,16 @@ function makeCard(obj) {
         {% if f.field == 'author_name' %}
         // Custom link presentation to use the numerical author ID behind the scenes
         card += `<a href="{{ '/authors/' | relative_url }}${obj.author_id}.html">${obj.author_name}</a>`;
+
+        {% elsif f.field == 'date' %}
+        // Custom link for date to trigger the browse page hash filter
+        // Split by semicolon just in case we ever have multiple dates (e.g., "1935; 1936")
+        const dates = obj[{{ f.field | jsonify }}].split(';');
+        const dateLinks = dates.map(d => {
+            const dTrim = d.trim();
+            return `<a href="{{ page.url | relative_url }}#date:${encodeURIComponent(dTrim)}">${dTrim}</a>`;
+        });
+        card += dateLinks.join('; ');
         
         {%- elsif f.field == 'religion' %}
         // Custom badge display for religion to show significance cleanly inline
