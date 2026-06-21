@@ -70,7 +70,11 @@ Information about the authors is also featured on the above pages and on dedicat
 ## Acknowledgements
 
 We are grateful to the following students and individuals who assisted with data entry and other project tasks:
-- (To be added)
+- Christer Næss Andreassen
+- Andreas Kalleberg
+- Rahul Mitra
+
+We are also grateful to the University of Agder’s Students in research and innovation projects funding scheme for funding our student contributors and the Faculty of Humanities and Education for providing some initial project funding.
 
 The feature image on the homepage was created using images by [PURI](https://unsplash.com/@puribranding?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText) and [Skye Studios](https://unsplash.com/@skyestudios?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText) on [Unsplash](https://unsplash.com).
 
