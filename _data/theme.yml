@@ -57,7 +57,7 @@ map-base: Esri_NatGeoWorldMap # set default base map, choose from: Esri_WorldStr
 map-search: true # not suggested with large collections
 map-search-fuzziness: 0.35 # fuzzy search range from 1 = anything to 0 = exact match only
 map-cluster: true # suggested for large collection or with many items in same location
-map-cluster-radius: 25 # size of clusters, from ~ 10 to 80
+map-cluster-radius: 50 # size of clusters, from ~ 10 to 80
 
 ##########
 # TIMELINE PAGE
@@ -71,9 +71,9 @@ year-nav-increment: 5 # set increments to auto gen nav years
 # 
 # add metadata fields for export in data downloads (tip: paste in first row of csv)
 # comma delimited list, reference url is automatic
-metadata-export-fields: "title,creator,date,description,subject,location,latitude,longitude,source,identifier,type,format,language,rights,rightsstatement"
+metadata-export-fields: "title,date,creator,description,subject,location,religion,source,olid_works_path,type,format,language,rights,rightsstatement"
 # generate a facets list for given fields, comma delimited
-metadata-facets-fields: "subject,creator,format"
+metadata-facets-fields: "creator,subject,location,religion"
 
 ##########
 # Compound Objects 
