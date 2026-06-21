@@ -13,7 +13,10 @@
     https://github.com/CollectionBuilder/collectionbuilder-csv
 -->
 <meta name="generator" content="collectionbuilder-csv" />
-
+<!-- Load Google Fonts-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,100..900;1,100..900&family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
 <!-- load style sheets -->
 {% if site.data.theme.font-cdn %}{{ site.data.theme.font-cdn }}{%- endif -%}
 <link rel="stylesheet" href="{% if site.data.theme.bootswatch %}https://cdn.jsdelivr.net/npm/bootswatch@5.3.8/dist/{{ site.data.theme.bootswatch }}/bootstrap.min.css{% else %}{{ site.lib-assets | default: '/assets/lib' | relative_url }}/bootstrap.min.css{% endif %}" type="text/css">

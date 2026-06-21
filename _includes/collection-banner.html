@@ -53,13 +53,13 @@
 </style>
 <div id="home-banner" class="mb-0 position-relative">
     <div id="home-title-box">
-        <div class="p-2 text-center text-white bg-dark bg-opacity-75">
+        <div class="p-2 text-center text-white bg-dark bg-opacity-50">
             {% if site.organization-logo-nav %}
             <a class="d-none d-md-block" href="{{ site.organization-link }}">
                 <img id="home-banner-logo" src="{{ site.organization-logo-nav | relative_url }}" alt="{{ site.organization-name | escape }} home" >
             </a>{% endif %}
             <h1 class="display-2">{{ page.banner-heading | default: site.title }}</h1>
-            {% if page.banner-sub-heading != false and page.banner-sub-heading or site.tagline %}<p class="mb-0">{{ page.banner-sub-heading | default: site.tagline }}</p>{% endif %}
+            {% if page.banner-sub-heading != false and page.banner-sub-heading or site.tagline %}<p class="mb-0"><em>{{ page.banner-sub-heading | default: site.tagline }}</em></p>{% endif %}
         </div>
     </div>
     {% if jumboLink != '' %}
