@@ -16,22 +16,21 @@ layout: default
     <div class="row mb-5">
         <div class="col-md-5 text-center">
             <figure class="figure">
-                <img src="{{ '/objects/small/' | append: author_id | append: '.jpg' | absolute_url }}" class="figure-img img-fluid rounded" alt="Photograph of {{ author_name }}" width="400">
+                <img src="{{ '/objects/small/' | append: author_id | append: '_sm.jpg' | absolute_url }}" class="figure-img img-fluid rounded" alt="Photograph of {{ author_name }}" width="400">
                 <figcaption class="figure-caption text-end text-center">Source: {{ page.image_source }}</figcaption>
             </figure>
         </div>
 
         <div class="col-md-7">
             <h1 class="mb-3">{{ author_name }}</h1>
-            <p class="lead">{{ page.birth_date }} &ndash; {{ page.death_date }}</p>
             
-            {% if page.biography %}
-            <p>{{ page.biography }}</p>
+            {% if page.wikipedia_bio %}
+            <p>{{ page.wikipedia_bio }}</p>
             {% endif %}
 
             {% assign religions = site.data.author_religion | where: "author_id", author_id %}
             {% if religions.size > 0 %}
-            <h5>Religious Affiliations</h5>
+            <h5>Religious Associations</h5>
             <ul class="list-unstyled mb-4">
                 {% for r in religions %}
                 {% assign rel_rec = site.data.religion | where: "id", r.religion_id | first %}
@@ -45,9 +44,32 @@ layout: default
             </ul>
             {% endif %}
 
-            {% if page.wikidata_id %}
-            <a href="https://www.wikidata.org/wiki/{{ page.wikidata_id }}" target="_blank" rel="noopener" class="btn btn-outline-secondary">
+            {% assign countries = site.data.author_country | where: "author_id", author_id %}
+            {% if countries.size > 0 %}
+                <h5>Associated Countries</h5>
+                <ul class="list-unstyled mb-4">
+                    {% for c in countries %}
+                        {% comment %} Match the alpha-3-code in country.csv to the country_id in author_country.csv {% endcomment %}
+                        {% assign country_rec = site.data.country | where: "alpha-3-code", c.country_id | first %}
+                        <li>
+                            {{ country_rec.country }} 
+                            <span class="badge {% if c.significance == 'major' %}bg-primary text-white{% else %}bg-secondary text-white{% endif %}">
+                                {{ c.significance | capitalize }}
+                            </span>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+
+            {% if page.wikidata %}
+            <a href="https://www.wikidata.org/wiki/{{ page.wikidata }}" target="_blank" rel="noopener" class="btn btn-outline-secondary">
                 View Wikidata Entity
+            </a>
+            {% endif %}
+
+            {% if page.wikipedia_url %}
+            <a href="{{ page.wikipedia_url }}" target="_blank" rel="noopener" class="btn btn-outline-secondary">
+                View Wikpedia Article
             </a>
             {% endif %}
         </div>
@@ -107,6 +129,11 @@ layout: default
         <div class="col-12">
             <h3 class="border-bottom pb-2">Associated Locations</h3>
             <div id="authorMap" style="height: 400px; width: 100%; z-index: 1;"></div>
+            <div id="map-legend" class="mb-2 text-end">
+                <strong>Location Significance:</strong>
+                <span class="badge" style="background-color: #0d6efd; color: white;">Major</span>
+                <span class="badge" style="background-color: #86b7fe; color: black;">Minor</span>
+            </div>
         </div>
     </div>
 
@@ -171,14 +198,23 @@ document.addEventListener("DOMContentLoaded", function() {
     // 3. Add Markers & Calculate Bounds
     const bounds = [];
     locations.forEach(loc => {
-        if(loc.lat && loc.lng) {
-            let markerColor = loc.significance === 'major' ? 'blue' : 'gray';
-            let popupText = `<b>${loc.name}</b><br>Significance: ${loc.significance}`;
-            
-            let marker = L.marker([loc.lat, loc.lng]).addTo(map).bindPopup(popupText);
-            bounds.push([loc.lat, loc.lng]);
-        }
-    });
+    if(loc.lat && loc.lng) {
+        // Define colours based on significance
+        let markerColor = loc.significance === 'major' ? '#0d6efd' : '#86b7fe';
+        
+        // If using standard L.marker, note that Leaflet's default icons are 
+        // images and don't change colour easily without plugins.
+        // It is recommended to use L.circleMarker for dynamic colour coding:
+        let marker = L.circleMarker([loc.lat, loc.lng], {
+            color: markerColor,      // Border colour
+            fillColor: markerColor,  // Fill colour
+            fillOpacity: 0.8,
+            radius: 12
+        }).addTo(map);
+
+        marker.bindPopup(`<b>${loc.name}</b><br>Significance: ${loc.significance}`);
+    }
+});
 
     // 4. Auto-zoom to fit all markers
     if (bounds.length > 0) {

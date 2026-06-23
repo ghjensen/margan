@@ -14,7 +14,7 @@ permalink: /authors.html
             
             {% comment %} 1. Author Photo (Constructed dynamically from ID) {% endcomment %}
             <a href="{{ '/authors/' | append: author.id | append: '.html' | relative_url }}">
-                <img src="{{ '/objects/small/' | append: author.id | append: '.jpg' | relative_url }}" class="card-img-top p-2" alt="{{ author.given-names }} {{ author.family-names }}" style="object-fit: cover; object-position: top; height: 300px; border-radius: 12px;" onerror="this.style.display='none'">
+                <img src="{{ '/objects/small/' | append: author.id | append: '_sm.jpg' | relative_url }}" class="card-img-top p-2" alt="{{ author.given-names }} {{ author.family-names }}" style="object-fit: cover; object-position: top; height: 300px; border-radius: 12px;" onerror="this.style.display='none'">
             </a>
             
             <div class="card-body">
