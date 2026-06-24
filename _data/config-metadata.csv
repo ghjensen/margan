@@ -2,9 +2,9 @@ field,display_name,browse_link,external_link,dc_map,schema_map
 title,Title,,,DCTERMS.title,headline
 creator,Creator,,,DCTERMS.creator,creator
 author_id,Author,false,false
-date,Date Created,true,,DCTERMS.date,dateCreated
+date,Date of Publication,true,,DCTERMS.date,dateCreated
 description,Description,,,DCTERMS.description,description
-subject,Subjects,true,,DCTERMS.subject,keywords
+subject,Keywords,true,,DCTERMS.subject,keywords
 source,Wikidata Entity ID,,true,,
 olid_works_path,Open Library ID,,true,,
 type,Item Type,,,DCTERMS.type,
