@@ -108,8 +108,9 @@ layout: default
                             <td>
                                 {% assign keywords = novel.subject | split: ";" %}
                                 {% for word in keywords %}
-                                <a href="{{ '/browse.html' | absolute_url }}?q={{ word | strip | url_encode }}" class="btn btn-sm btn-outline-secondary m-1">
-                                    {{ word | strip }}
+                                {% assign cleaned_word = word | strip %}
+                                <a href="{{ '/browse.html' | absolute_url }}#subject:{{ cleaned_word | uri_escape }}" class="btn btn-sm btn-outline-secondary m-1">
+                                    {{ cleaned_word }}
                                 </a>
                                 {% endfor %}
                             </td>
