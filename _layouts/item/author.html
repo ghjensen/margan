@@ -133,7 +133,7 @@ layout: default
             <div id="map-legend" class="mb-2 text-end">
                 <strong>Location Significance:</strong>
                 <span class="badge" style="background-color: #0d6efd; color: white;">Major</span>
-                <span class="badge" style="background-color: #86b7fe; color: black;">Minor</span>
+                <span class="badge" style="background-color: #6C757D; color: white;">Minor</span>
             </div>
         </div>
     </div>
@@ -201,7 +201,7 @@ document.addEventListener("DOMContentLoaded", function() {
     locations.forEach(loc => {
     if(loc.lat && loc.lng) {
         // Define colours based on significance
-        let markerColor = loc.significance === 'major' ? '#0d6efd' : '#86b7fe';
+        let markerColor = loc.significance === 'major' ? '#0d6efd' : '#6C757D';
         
         // If using standard L.marker, note that Leaflet's default icons are 
         // images and don't change colour easily without plugins.
