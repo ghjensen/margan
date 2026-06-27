@@ -20,10 +20,10 @@ source-code: https://github.com/CollectionBuilder/collectionbuilder-csv
 # title of site appears in banner
 title: Mapping Religion in the Global Anglophone Novel (MaRGAN)
 # tagline, a short phrase that will appear throughout the site in the top banner
-tagline: Exploring religious worlds through modern fiction
+tagline: Reading religion through modern fiction
 # description appears in meta tags and other locations
 # this description might appear in search result lists, keep around 160 characters max
-description: "Mapping Religion in the Global Anglophone Novel (MaRGAN) offers insight into intersecting religious and aesthetic attitudes and practices from 1890-1980."
+description: "This project connects literary aesthetics and religious practice between 1890 and 1980."
 # keywords, a short list of subjects describing the collection, separated by semicolon, to appear in rich markup
 keywords: mapping; religion; global anglophone novel; modern literature; novel; English; 1890-1980; modernist literature; contemporary literature; postcolonial literature; world literature
 # creator of the digital collection, to appear in meta tags; we typically use our GitHub usernames but feel free to just use your name
