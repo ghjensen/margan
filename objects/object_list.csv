@@ -1,6 +1,4 @@
 filename,object_location,image_small,image_thumb
-210a.jpg,/objects/210a.jpg,/objects/small/210a_sm.jpg,/objects/thumbs/210a_th.jpg
-210b.jpg,/objects/210b.jpg,/objects/small/210b_sm.jpg,/objects/thumbs/210b_th.jpg
 43.jpg,/objects/43.jpg,/objects/small/43_sm.jpg,/objects/thumbs/43_th.jpg
 44.jpg,/objects/44.jpg,/objects/small/44_sm.jpg,/objects/thumbs/44_th.jpg
 45.jpg,/objects/45.jpg,/objects/small/45_sm.jpg,/objects/thumbs/45_th.jpg
@@ -39,6 +37,7 @@ filename,object_location,image_small,image_thumb
 78.jpg,/objects/78.jpg,/objects/small/78_sm.jpg,/objects/thumbs/78_th.jpg
 79.jpg,/objects/79.jpg,/objects/small/79_sm.jpg,/objects/thumbs/79_th.jpg
 80.jpg,/objects/80.jpg,/objects/small/80_sm.jpg,/objects/thumbs/80_th.jpg
+COLOURBOX41500194.jpg,/objects/COLOURBOX41500194.jpg,/objects/small/colourbox41500194_sm.jpg,/objects/thumbs/colourbox41500194_th.jpg
 cover_a_glastonbury_romance.jpg,/objects/cover_a_glastonbury_romance.jpg,/objects/small/cover_a_glastonbury_romance_sm.jpg,/objects/thumbs/cover_a_glastonbury_romance_th.jpg
 cover_a_passage_to_india.jpg,/objects/cover_a_passage_to_india.jpg,/objects/small/cover_a_passage_to_india_sm.jpg,/objects/thumbs/cover_a_passage_to_india_th.jpg
 cover_a_portrait_of_the_artist_as_a_young_man.jpg,/objects/cover_a_portrait_of_the_artist_as_a_young_man.jpg,/objects/small/cover_a_portrait_of_the_artist_as_a_young_man_sm.jpg,/objects/thumbs/cover_a_portrait_of_the_artist_as_a_young_man_th.jpg
@@ -83,14 +82,6 @@ cover_they_were_defeated.jpg,/objects/cover_they_were_defeated.jpg,/objects/smal
 cover_ubik.jpg,/objects/cover_ubik.jpg,/objects/small/cover_ubik_sm.jpg,/objects/thumbs/cover_ubik_th.jpg
 cover_ulysses.jpg,/objects/cover_ulysses.jpg,/objects/small/cover_ulysses_sm.jpg,/objects/thumbs/cover_ulysses_th.jpg
 cover_untouchable.jpg,/objects/cover_untouchable.jpg,/objects/small/cover_untouchable_sm.jpg,/objects/thumbs/cover_untouchable_th.jpg
-demo_001.jpg,/objects/demo_001.jpg,/objects/small/demo_001_sm.jpg,/objects/thumbs/demo_001_th.jpg
-demo_002.pdf,/objects/demo_002.pdf,/objects/small/demo_002_sm.jpg,/objects/thumbs/demo_002_th.jpg
-demo_003.mp3,/objects/demo_003.mp3,,
-demo_004.jpg,/objects/demo_004.jpg,/objects/small/demo_004_sm.jpg,/objects/thumbs/demo_004_th.jpg
-demo_005.txt,/objects/demo_005.txt,,
-demo_012.md,/objects/demo_012.md,,
-hells_half_theta.jpg,/objects/hells_half_theta.jpg,/objects/small/hells_half_theta_sm.jpg,/objects/thumbs/hells_half_theta_th.jpg
 homepage_banner.jpg,/objects/homepage_banner.jpg,/objects/small/homepage_banner_sm.jpg,/objects/thumbs/homepage_banner_th.jpg
 homepage_banner2.jpg,/objects/homepage_banner2.jpg,/objects/small/homepage_banner2_sm.jpg,/objects/thumbs/homepage_banner2_th.jpg
 homepage_banner3.jpg,/objects/homepage_banner3.jpg,/objects/small/homepage_banner3_sm.jpg,/objects/thumbs/homepage_banner3_th.jpg
-hughes_article.png,/objects/hughes_article.png,/objects/small/hughes_article_sm.jpg,/objects/thumbs/hughes_article_th.jpg

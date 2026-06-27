@@ -9,7 +9,7 @@ layout: page
 
 {%- comment -%}
 
-    Figure out default "Subjects" and "Locations" page cloud values as configured in in "theme.yml", 
+    Figure out default "Subjects", "Locations", and "Religions" page cloud values as configured in in "theme.yml", 
     and set default values for cloud include.
 
 {%- endcomment -%}
@@ -21,6 +21,10 @@ layout: page
     {% assign fields = site.data.theme.locations-fields %}
     {% assign min = site.data.theme.locations-min | default: 1 %}
     {% assign stopwords = site.data.theme.locations-stopwords %}
+{%- elsif page.cloud-fields == "site.data.theme.religions-fields" -%}
+    {% assign fields = site.data.theme.religions-fields %}
+    {% assign min = site.data.theme.religions-min | default: 1 %}
+    {% assign stopwords = site.data.theme.religions-stopwords %}
 {%- else -%}
     {% assign fields = page.cloud-fields | default: "subjects" %}
     {% assign min = page.cloud-min | default: 1 %}
