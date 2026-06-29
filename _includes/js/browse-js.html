@@ -172,7 +172,7 @@ function makeCard(obj) {
             
             let html = `<a href="{{ page.url | relative_url }}#religion:${encodeURIComponent(name.toLowerCase())}">${name}</a>`;
             if (significance) {
-                const badgeClass = significance === 'major' ? 'bg-primary text-white' : 'bg-light text-dark border';
+                const badgeClass = significance === 'major' ? 'bg-primary text-white' : 'bg-info text-white';
                 html += ` <span class="badge ${badgeClass}" style="font-size: 0.75em; vertical-align: middle;">${significance}</span>`;
             }
             return html;
@@ -190,7 +190,7 @@ function makeCard(obj) {
             
             let html = `<a href="{{ page.url | relative_url }}#location:${encodeURIComponent(name.toLowerCase())}">${name}</a>`;
             if (significance) {
-                const badgeClass = significance === 'major' ? 'bg-primary text-white' : 'bg-light text-dark border';
+                const badgeClass = significance === 'major' ? 'bg-primary text-white' : 'bg-info text-white';
                 html += ` <span class="badge ${badgeClass}" style="font-size: 0.75em; vertical-align: middle;">${significance}</span>`;
             }
             return html;

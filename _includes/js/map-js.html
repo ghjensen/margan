@@ -46,6 +46,40 @@
                     {% assign author_rec = site.data.author | where: "id", item.author_id | first %}
                     "author_name": {% if author_rec %}{{ author_rec.given-names | append: " " | append: author_rec.family-names | jsonify }}{% else %}""{% endif %},
                     
+                    {% comment %} Fetch novel religions with significance {% endcomment %}
+                    "novel_religions": [
+                        {% assign n_rels = site.data.novel_religion | where: "novel_id", item.objectid %}
+                        {% assign first_rel = true %}
+                        {% for nr in n_rels %}
+                            {% assign rel_rec = site.data.religion | where: "id", nr.religion_id | first %}
+                            {% if rel_rec %}
+                                {% if first_rel == false %},{% endif %}
+                                {
+                                    "name": {{ rel_rec.religion | jsonify }},
+                                    "significance": {{ nr.significance | jsonify }}
+                                }
+                                {% assign first_rel = false %}
+                            {% endif %}
+                        {% endfor %}
+                    ],
+
+                    {% comment %} Fetch novel locations with significance {% endcomment %}
+                    "novel_locations": [
+                        {% assign n_locs = site.data.novel_country | where: "novel_id", item.objectid %}
+                        {% assign first_loc = true %}
+                        {% for nc in n_locs %}
+                            {% assign loc_rec = site.data.country | where: "alpha-3-code", nc.country_id | first %}
+                            {% if loc_rec %}
+                                {% if first_loc == false %},{% endif %}
+                                {
+                                    "name": {{ loc_rec.country | jsonify }},
+                                    "significance": {{ nc.significance | jsonify }}
+                                }
+                                {% assign first_loc = false %}
+                            {% endif %}
+                        {% endfor %}
+                    ],
+
                     {% for f in fields %}
                     {% unless f.field == 'author_name' %}{{ f.field | jsonify }}: {{ item[f.field] | jsonify }},{% endunless %}
                     {% endfor %}
@@ -178,20 +212,57 @@
                 popupTemplate += '<strong>{{ f.display_name }}:</strong> ' + authorLink + '<br>';
                 
             // 3. Browse Page Linking (Subject, Religion, Location)
-            } else if (fieldName === 'subject' || fieldName === 'religion' || fieldName === 'location') {
+            } else if (fieldName === 'subject') {
+                // Keep standard behavior for Subjects
                 var itemArray = rawValue.split(';');
                 var clickableLinks = [];
-                
                 for (var i = 0; i < itemArray.length; i++) {
                     var itemTrimmed = itemArray[i].trim();
                     if (itemTrimmed) {
                         var urlHash = encodeURIComponent(itemTrimmed.toLowerCase());
-                        // Dynamically insert the fieldName so it outputs #location:india, #religion:hindu, etc.
                         var linkHtml = '<a href="{{ "/browse.html" | relative_url }}#' + fieldName + ':' + urlHash + '">' + itemTrimmed + '</a>';
                         clickableLinks.push(linkHtml);
                     }
                 }
                 popupTemplate += '<strong>{{ f.display_name }}:</strong> ' + clickableLinks.join('; ') + '<br>';
+
+            } else if (fieldName === 'religion' || fieldName === 'location') {
+                // Pull from our custom data arrays for Badges
+                var customData = (fieldName === 'religion') ? feature.properties.novel_religions : feature.properties.novel_locations;
+                
+                if (customData && customData.length > 0) {
+                    var clickableLinks = [];
+                    for (var i = 0; i < customData.length; i++) {
+                        var rName = customData[i].name;
+                        var rSig = customData[i].significance;
+                        var urlHash = encodeURIComponent(rName.toLowerCase());
+                        
+                        var linkHtml = '<a href="{{ "/browse.html" | relative_url }}#' + fieldName + ':' + urlHash + '">' + rName + '</a>';
+                        
+                        // If significance exists, format the exact same HTML badge as the authors page
+                        if (rSig) {
+                            var badgeClass = (rSig === 'major') ? 'bg-primary text-white' : 'bg-info text-white';
+                            linkHtml += ' <span class="badge ' + badgeClass + '" style="font-size: 0.75em; vertical-align: middle;">' + rSig + '</span>';
+                        }
+                        clickableLinks.push('<span class="d-inline-block">' + linkHtml + '</span>');
+                    }
+                    // CHANGED: Added a <br> after the title and joined the array with <br> instead of '; '
+                    popupTemplate += '<strong>{{ f.display_name }}:</strong><br>' + clickableLinks.join('<br>') + '<br>';
+                } else {
+                    // Fallback to plain text strings if the novel is missing relationship data
+                    var itemArray = rawValue.split(';');
+                    var clickableLinks = [];
+                    for (var i = 0; i < itemArray.length; i++) {
+                        var itemTrimmed = itemArray[i].trim();
+                        if (itemTrimmed) {
+                            var urlHash = encodeURIComponent(itemTrimmed.toLowerCase());
+                            var linkHtml = '<a href="{{ "/browse.html" | relative_url }}#' + fieldName + ':' + urlHash + '">' + itemTrimmed + '</a>';
+                            clickableLinks.push(linkHtml);
+                        }
+                    }
+                    // CHANGED: Added a <br> after the title and joined the array with <br>
+                    popupTemplate += '<strong>{{ f.display_name }}:</strong><br>' + clickableLinks.join('<br>') + '<br>';
+                }
                 
             // 4. Standard Default Display (for everything else)
             } else {

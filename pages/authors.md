@@ -52,7 +52,7 @@ permalink: /authors.html
                                 {% if r.significance == 'major' %}
                                     {% assign badge_class = 'bg-primary text-white' %}
                                 {% else %}
-                                    {% assign badge_class = 'bg-light text-dark border' %}
+                                    {% assign badge_class = 'bg-info text-white' %}
                                 {% endif %}
                                 <span class="badge {{ badge_class }}" style="font-size: 0.75em; vertical-align: middle;">{{ r.significance }}</span>
                             {% endif %}
@@ -76,7 +76,7 @@ permalink: /authors.html
                                 {% if c.significance == 'major' %}
                                     {% assign badge_class = 'bg-primary text-white' %}
                                 {% else %}
-                                    {% assign badge_class = 'bg-light text-dark border' %}
+                                    {% assign badge_class = 'bg-info text-white' %}
                                 {% endif %}
                                 <span class="badge {{ badge_class }}" style="font-size: 0.75em; vertical-align: middle;">{{ c.significance }}</span>
                             {% endif %}
