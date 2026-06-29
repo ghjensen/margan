@@ -1,0 +1,156 @@
+---
+layout: page
+---
+
+{{ content }}
+
+{%- comment -%}
+  Load the cloud settings exactly as the default cloud.html does.
+{%- endcomment -%}
+{%- if page.cloud-fields == "site.data.theme.subjects-fields" -%}
+    {% assign fields = site.data.theme.subjects-fields %}
+    {% assign min = site.data.theme.subjects-min | default: 1 %}
+    {% assign stopwords = site.data.theme.subjects-stopwords %}
+{%- else -%}
+    {% assign fields = page.cloud-fields | default: "subjects" %}
+    {% assign min = page.cloud-min | default: 1 %}
+    {% assign stopwords = page.cloud-stopwords %}
+{%- endif -%}
+
+{% assign cloud_id = "cloud-div-" | append: fields | slugify %}
+<div id="{{ cloud_id }}" class="text-center my-4 bg-{{ page.background | default: 'white' }} border rounded p-2"></div>
+{% include js/cloud-js.html id=cloud_id fields=fields min=min stopwords=stopwords shuffle=page.shuffle button=page.button %}
+
+<!-- Dynamic Table Container (Hidden by default) -->
+<div id="keyword-details-container" class="mt-5" style="display: none;">
+    <h3 id="keyword-heading" class="border-bottom pb-2"></h3>
+    <p id="keyword-description" class="lead mb-4"></p>
+    
+    <div class="table-responsive shadow-sm">
+        <table class="table table-bordered table-striped align-middle mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th style="width: 25%; text-align: center;">Novel</th>
+                    <th style="width: 75%;">Engagement</th>
+                </tr>
+            </thead>
+            <tbody id="keyword-table-body">
+                <!-- Populated instantly by JavaScript -->
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Relational Data & Interaction Script -->
+<script>
+// 1. Pre-compile relational data into a hidden JSON object
+const keywordData = {};
+
+{% for k in site.data.keyword %}
+  keywordData[{{ k.keyword | downcase | jsonify }}] = {
+    "name": {{ k.keyword | jsonify }}, 
+    "description": {{ k.description | jsonify }},
+    "novels": []
+  };
+{% endfor %}
+
+{% for nk in site.data.novel_keyword %}
+  {% assign matched_keyword = site.data.keyword | where: "id", nk.keyword_id | first %}
+  {% assign matched_novel = site.data.novel | where: "objectid", nk.novel_id | first %}
+  
+  {% if matched_keyword and matched_novel %}
+    keywordData[{{ matched_keyword.keyword | downcase | jsonify }}].novels.push({
+      "title": {{ matched_novel.title | jsonify }},
+      "objectid": {{ matched_novel.objectid | jsonify }},
+      "author_name": {{ matched_novel.creator | jsonify }},
+      "author_id": {{ matched_novel.author_id | jsonify }},
+      "cover": "{{ matched_novel.image_small | relative_url }}",
+      "engagement": {{ nk.engagement | jsonify }}
+    });
+  {% endif %}
+{% endfor %}
+
+// 2. Table population logic
+document.addEventListener("DOMContentLoaded", function() {
+    const detailContainer = document.getElementById('keyword-details-container');
+    const heading = document.getElementById('keyword-heading');
+    const description = document.getElementById('keyword-description');
+    const tbody = document.getElementById('keyword-table-body');
+
+    function renderKeyword(rawHashKey) {
+        const hashKey = rawHashKey.toLowerCase();
+        const data = keywordData[hashKey];
+        
+        if (!data) return; 
+        
+        heading.textContent = data.name;
+        description.textContent = data.description || "No description available.";
+        tbody.innerHTML = '';
+        
+        if (data.novels.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="2" class="text-center text-muted py-4">No engagement text associated with this keyword yet.</td></tr>';
+        } else {
+            data.novels.forEach(novel => {
+                const tr = document.createElement('tr');
+                
+                // Left Column: Linked Cover, Title, and Author
+                const tdNovel = document.createElement('td');
+                tdNovel.className = "text-center";
+                tdNovel.innerHTML = `
+                    <a href="{{ '/items/' | relative_url }}${novel.objectid}.html" class="text-decoration-none text-dark">
+                        <img src="${novel.cover}" alt="Cover for ${novel.title}" class="img-thumbnail mb-2" style="max-width: 120px; display: block; margin: 0 auto;">
+                        <strong>${novel.title}</strong>
+                    </a>
+                    <br>
+                    <small class="text-muted">
+                        <a href="{{ '/authors/' | relative_url }}${novel.author_id}.html" class="text-decoration-none text-secondary">
+                            ${novel.author_name}
+                        </a>
+                    </small>
+                `;
+                
+                // Right Column: Engagement Text
+                const tdEngage = document.createElement('td');
+                tdEngage.textContent = novel.engagement; 
+                
+                tr.appendChild(tdNovel);
+                tr.appendChild(tdEngage);
+                tbody.appendChild(tr);
+            });
+        }
+        
+        detailContainer.style.display = 'block';
+        detailContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    // 3. Event Delegation: Intercept clicks on the dynamically generated cloud links
+    document.addEventListener('click', function(e) {
+        const link = e.target.closest('a[href*="#subject:"]');
+        if (link) {
+            e.preventDefault(); 
+            
+            const url = new URL(link.href);
+            if (url.hash && url.hash.startsWith('#subject:')) {
+                const hashKey = decodeURIComponent(url.hash.replace('#subject:', ''));
+                history.pushState(null, null, url.hash);
+                renderKeyword(hashKey);
+            }
+        }
+    });
+
+    // 4. Check for hashes on initial page load (for shared links)
+    if (window.location.hash && window.location.hash.startsWith('#subject:')) {
+        const initialKey = decodeURIComponent(window.location.hash.replace('#subject:', ''));
+        renderKeyword(initialKey);
+    }
+    
+    // 5. Allow browser back/forward buttons to update the table
+    window.addEventListener('hashchange', function() {
+        if (window.location.hash.startsWith('#subject:')) {
+            renderKeyword(decodeURIComponent(window.location.hash.replace('#subject:', '')));
+        } else {
+            detailContainer.style.display = 'none';
+        }
+    });
+});
+</script>
