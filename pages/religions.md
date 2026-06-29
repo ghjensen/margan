@@ -7,7 +7,7 @@ permalink: /religions.html
 cloud-fields: site.data.theme.religions-fields
 ---
 
-## Browse Locations
+## Browse Religions
 
 Use this word cloud visualization to browse religions.
 Word size is determined by frequency and all words link to a corresponding collection search.
