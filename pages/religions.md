@@ -11,3 +11,5 @@ cloud-fields: site.data.theme.religions-fields
 
 Use this word cloud visualization to browse religions.
 Word size is determined by frequency and all words link to a corresponding collection search.
+
+Clicking on a religion will take you to the "Novels" page with a list of all novels in the MaRGAN dataset that feature that religion.
