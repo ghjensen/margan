@@ -12,4 +12,4 @@ cloud-fields: site.data.theme.subjects-fields
 Use this word cloud visualization to browse keywords relevant to each novel.
 Word size is determined by frequency and all keywords link to a corresponding collection search. 
 
-Clicking on a keyword will display a list of all novels in the MaRGAN dataset that feature this keyword (and a corresponding description of how the text engages with it).
+Clicking on a keyword will display a list of all novels in the MaRGAN dataset that feature this keyword, as well as a corresponding "engagement" that describes how this keyword relates to the text. If applicable, any cross-references indicating a relationship between these engagements will also be displayed.

@@ -59,13 +59,44 @@ const keywordData = {};
   {% assign matched_novel = site.data.novel | where: "objectid", nk.novel_id | first %}
   
   {% if matched_keyword and matched_novel %}
+    {% assign nk_id_str = nk.id | serialize %}
+    {% assign cross_ref_array = "" | split: "" %}
+    
+    {% for ref in site.data.novel_keyword_crossref %}
+      {% assign ref_source_str = ref.source_novel_keyword_id | serialize %}
+      {% if ref_source_str == nk_id_str %}
+        {% assign target_id_str = ref.target_novel_keyword_id | serialize %}
+        {% assign target_engagement = site.data.novel_keyword | where: "id", target_id_str | first %}
+        
+        {% if target_engagement %}
+          {% assign target_novel = site.data.novel | where: "objectid", target_engagement.novel_id | first %}
+          {% assign target_kw_rec = site.data.keyword | where: "id", target_engagement.keyword_id | first %}
+          
+          {% capture html_snippet %}
+            <div class="text-end"><p class="btn btn-secondary fw-bold text-end mb-1 mt-2 ps-3 pe-3" style="font-size: 0.9em;"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+  <path fill-rule="evenodd" d="M1 11.5a.5.5 0 0 0 .5.5h11.793l-3.147 3.146a.5.5 0 0 0 .708.708l4-4a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708.708L13.293 11H1.5a.5.5 0 0 0-.5.5m14-7a.5.5 0 0 1-.5.5H2.707l3.147 3.146a.5.5 0 1 1-.708.708l-4-4a.5.5 0 0 1 0-.708l4-4a.5.5 0 1 1 .708.708L2.707 4H14.5a.5.5 0 0 1 .5.5"/>
+</svg>
+              {{ ref.cross-ref_type }}
+            <a href="{{ '/keywords.html' | relative_url }}#subject:{{ target_kw_rec.keyword | downcase | replace: ' ', '%20' }}?engage={{ target_id_str }}" class="text-white text-decoration-none"> 
+                "{{ target_kw_rec.keyword }}" in <em>{{ target_novel.title }}</em>
+              </a>
+            </p>
+            </div>
+          {% endcapture %}
+          {% assign cross_ref_array = cross_ref_array | push: html_snippet %}
+        {% endif %}
+      {% endif %}
+    {% endfor %}
+
     keywordData[{{ matched_keyword.keyword | downcase | jsonify }}].novels.push({
+      "id": "{{ nk.id }}", {% comment %} Pass the unique engagement ID {% endcomment %}
       "title": {{ matched_novel.title | jsonify }},
       "objectid": {{ matched_novel.objectid | jsonify }},
       "author_name": {{ matched_novel.creator | jsonify }},
       "author_id": {{ matched_novel.author_id | jsonify }},
       "cover": "{{ matched_novel.image_small | relative_url }}",
-      "engagement": {{ nk.engagement | jsonify }}
+      "engagement": {{ nk.engagement | jsonify }},
+      "cross_refs": {{ cross_ref_array | jsonify }}
     });
   {% endif %}
 {% endfor %}
@@ -92,7 +123,9 @@ document.addEventListener("DOMContentLoaded", function() {
         } else {
             data.novels.forEach(novel => {
                 const tr = document.createElement('tr');
-                
+                // Assign the unique HTML anchor ID directly to the row element
+                tr.id = `engagement-${novel.id}`;
+
                 // Left Column: Linked Cover, Title, and Author
                 const tdNovel = document.createElement('td');
                 tdNovel.className = "text-center";
@@ -111,7 +144,16 @@ document.addEventListener("DOMContentLoaded", function() {
                 
                 // Right Column: Engagement Text
                 const tdEngage = document.createElement('td');
-                tdEngage.textContent = novel.engagement; 
+                
+                let engagementHTML = `<div>${novel.engagement}</div>`;
+                
+                if (novel.cross_refs && novel.cross_refs.length > 0) {
+                    novel.cross_refs.forEach(refHtml => {
+                        engagementHTML += refHtml;
+                    });
+                }
+                
+                tdEngage.innerHTML = engagementHTML;
                 
                 tr.appendChild(tdNovel);
                 tr.appendChild(tdEngage);
@@ -120,6 +162,21 @@ document.addEventListener("DOMContentLoaded", function() {
         }
         
         detailContainer.style.display = 'block';
+        
+        // Check if an engagement query parameter exists in the URL hash string
+        if (window.location.hash.includes('?engage=')) {
+            const targetRowId = window.location.hash.split('?engage=')[1];
+            const targetRow = document.getElementById(`engagement-${targetRowId}`);
+            if (targetRow) {
+                // Briefly flash a highlight color over the selected row
+                targetRow.style.backgroundColor = '#fff3cd';
+                setTimeout(() => { targetRow.style.backgroundColor = ''; }, 2000);
+                
+                targetRow.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                return;
+            }
+        }
+        
         detailContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 
@@ -131,23 +188,31 @@ document.addEventListener("DOMContentLoaded", function() {
             
             const url = new URL(link.href);
             if (url.hash && url.hash.startsWith('#subject:')) {
-                const hashKey = decodeURIComponent(url.hash.replace('#subject:', ''));
+                // Change the hash smoothly in the browser address bar
                 history.pushState(null, null, url.hash);
-                renderKeyword(hashKey);
+                
+                // Pull out the clean keyword name by splitting off any query parameters
+                const rawHashKey = decodeURIComponent(url.hash.replace('#subject:', ''));
+                const cleanKey = rawHashKey.split('?')[0]; 
+                
+                renderKeyword(cleanKey);
             }
         }
     });
 
     // 4. Check for hashes on initial page load (for shared links)
     if (window.location.hash && window.location.hash.startsWith('#subject:')) {
-        const initialKey = decodeURIComponent(window.location.hash.replace('#subject:', ''));
-        renderKeyword(initialKey);
+        const rawHashKey = decodeURIComponent(window.location.hash.replace('#subject:', ''));
+        const cleanKey = rawHashKey.split('?')[0];
+        renderKeyword(cleanKey);
     }
     
     // 5. Allow browser back/forward buttons to update the table
     window.addEventListener('hashchange', function() {
         if (window.location.hash.startsWith('#subject:')) {
-            renderKeyword(decodeURIComponent(window.location.hash.replace('#subject:', '')));
+            const rawHashKey = decodeURIComponent(window.location.hash.replace('#subject:', ''));
+            const cleanKey = rawHashKey.split('?')[0];
+            renderKeyword(cleanKey);
         } else {
             detailContainer.style.display = 'none';
         }
