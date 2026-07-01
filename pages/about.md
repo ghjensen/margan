@@ -77,6 +77,6 @@ The feature image on the homepage was created using images by [PURI](https://uns
 
 ## About this Website
 
-This website was created using CollectionBuilder (see "Technical Credits," below). However, we customized the original template significantly (e.g., to create the Authors page and populate the site with data from multiple CSV files, which are interlinked so as to mimic a relational database). All of our customizations, site data, and assets are available in MaRGAN's GitHub repository, currently located at [https://github.com/ghjensen/margan](https://github.com/ghjensen/margan).
+This website was created using CollectionBuilder (see "Technical Credits," below). However, we customized the original template significantly (e.g., to create the Authors page and populate the site with data from multiple CSV files that are interlinked, forming a relational database). All of our customizations, site data, and assets are available in MaRGAN's GitHub repository, currently located at [https://github.com/ghjensen/margan](https://github.com/ghjensen/margan).
 
 For collaborative data entry, we used Google Sheets. Our shared spreadsheet is set up to facilitate easy look-ups between sheets, but it also automatically transforms data entered manually, fetches novel and author data from the Wikipedia API, and populates structured sheets for easy export to CollectionBuilder. (Originally, we had considered using OpenRefine for such data transformations and API calls, but because of our customizations to the Google Sheet this extra step was no longer necessary.)
