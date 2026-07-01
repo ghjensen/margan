@@ -28,5 +28,3 @@ id,source_novel_keyword_id,cross-ref_type,target_novel_keyword_id
 27,134,relates to,136
 28,135,relates to,136
 29,136,relates to,134
-30,4,continues from,5
-31,4,relates to,8
