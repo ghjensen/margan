@@ -39,10 +39,11 @@ The MaRGAN dataset currently features {% assign total_novels = site.data.novel |
 
 You can browse, search, and explore the novels and their metadata using various site features:
 - The [Browse](browse.html) page
-- Word clouds of novel [Keywords](keywords.html) and [Locations](locations.html)
+- Word clouds of novel [Keywords](keywords.html), [Religions](religions.html), and [Locations](locations.html)
 - A tabular [Timeline](timeline.html) of the novels
 - A [Map](map.html) of the novels
 - Project [Data](data.html) searches and downloads
+- [Bibliography](bibliography.html)
 
 For additional information about the featured authors, including religions and locations associated with each, you can also browse the [Authors](authors.html) section.
 
