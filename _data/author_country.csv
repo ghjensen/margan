@@ -40,3 +40,5 @@ id,author_id,country_id,significance
 39,79,GBR,minor
 40,79,USA,major
 41,79,HTI,minor
+42,54,USA,major
+43,58,GBR,major
