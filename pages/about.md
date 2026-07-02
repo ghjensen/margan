@@ -76,9 +76,7 @@ We are grateful to the following students and individuals who assisted with data
 
 We are also grateful to the University of Agder’s Students in research and innovation projects funding scheme for funding our student contributors and the Faculty of Humanities and Education for providing some initial funding for our project.
 
-The feature image on the homepage, *Meditation led by Buddhist monks at Wat Khao Phra Khru Monastry, Si Racha, Thailand on 28 July 2019*, is by [Anek](https://www.colourbox.com/supplier/anek-75377). Image purchased on and courtesy of colorbox.com.
-
-The feature image at the top of this page was created using images by [PURI](https://unsplash.com/@puribranding?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText) and [Skye Studios](https://unsplash.com/@skyestudios?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText) on [Unsplash](https://unsplash.com).
+The feature image on the homepage and at the top of this page was created using images by [PURI](https://unsplash.com/@puribranding?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText) and [Skye Studios](https://unsplash.com/@skyestudios?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText) on [Unsplash](https://unsplash.com).
 
 ## About this Website
 
