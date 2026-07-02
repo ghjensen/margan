@@ -1,0 +1,36 @@
+---
+layout: none
+---
+{
+  "type": "FeatureCollection",
+  "features": [
+    {%- assign feature_list = "" -%}
+    {%- for entry in site.data.author_country -%}
+      {%- assign country_data = site.data.country | where: "alpha-3-code", entry.country_id | first -%}
+      {%- if country_data.latitude and country_data.longitude -%}
+        {%- assign author_item = site.data.novel | where: "author_id", entry.author_id | first -%}
+        {%- capture feature -%}
+        {
+          "type": "Feature",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [{{ country_data.longitude | strip }}, {{ country_data.latitude | strip }}]
+          },
+          "properties": {
+            "author": {{ author_item.creator | jsonify }},
+            "author_id": {{ entry.author_id | jsonify }},
+            "country": {{ country_data.country | jsonify }},
+            "association_type": {{ entry.significance | jsonify }}
+          }
+        }
+        {%- endcapture -%}
+        {%- assign feature_list = feature_list | append: feature | append: "___" -%}
+      {%- endif -%}
+    {%- endfor -%}
+    {%- assign feature_array = feature_list | split: "___" -%}
+    {%- for f in feature_array -%}
+      {{ f | strip }}
+      {%- unless forloop.last -%},{%- endunless -%}
+    {%- endfor -%}
+  ]
+}

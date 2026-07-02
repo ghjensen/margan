@@ -61,9 +61,18 @@
                 {% if stubs contains "map" %}
                 <div class="card my-3">
                     <div class="card-body">
-                        <h2 class="card-title h4">GeoJSON</h2>
-                        <p class="card-text">Metadata for all collection items that have geographic coordinates in <a href="https://en.wikipedia.org/wiki/GeoJSON">GeoJSON</a> format, useful for further exploration and analysis of this collection through a geographical lens.</p>
-                        <a href="{{ '/assets/data/geodata.json' | relative_url }}" class="btn btn-outline-dark" target="_blank">Geodata JSON</a>
+                        <h2 class="card-title h4">Novels - GeoJSON</h2>
+                        <p class="card-text">Download aggregated novel location metadata mapping literary entries to country coordinates. This metadata is structured in <a href="https://en.wikipedia.org/wiki/GeoJSON">GeoJSON</a> format, useful for further exploration and analysis of this collection through a geographical lens.</p>
+                        <a href="{{ '/assets/data/geodata_novels.json' | relative_url }}" class="btn btn-outline-dark" target="_blank">Novels - Geodata JSON</a>
+                    </div>
+                </div>
+                {%- endif -%}
+                {% if stubs contains "map" %}
+                <div class="card my-3">
+                    <div class="card-body">
+                        <h2 class="card-title h4">Authors - GeoJSON</h2>
+                        <p class="card-text">Download aggregated author location metadata. This metadata is structured in <a href="https://en.wikipedia.org/wiki/GeoJSON">GeoJSON</a> format, useful for further exploration and analysis of this collection through a geographical lens.</p>
+                        <a href="{{ '/assets/data/geodata_authors.json' | relative_url }}" class="btn btn-outline-dark" target="_blank">Authors - Geodata JSON</a>
                     </div>
                 </div>
                 {%- endif -%}
@@ -79,8 +88,8 @@
                 <div class="card my-3">
                     <div class="card-body">
                         <h2 class="card-title h4">Website Source Code</h2>
-                        <p class="card-text">GitHub repository containing source code for this project built with <a href="https://github.com/CollectionBuilder/collectionbuilder-csv">CollectionBuilder-CSV</a>.</p>
-                        <a href="{{ site.source-code | default: 'https://github.com/CollectionBuilder/collectionbuilder-csv' }}" class="btn btn-outline-dark">Source Code</a>
+                        <p class="card-text">All of our customizations, site data, and assets are available in MaRGAN’s GitHub repository, currently located at <a href="https://github.com/ghjensen/margan" target="_blank">https://github.com/ghjensen/margan</a>. The original CollectionBuilder codebase is available at <a href="https://github.com/CollectionBuilder/collectionbuilder-csv" target="_blank">https://github.com/CollectionBuilder/collectionbuilder-csv</a>.</p>
+                        <a href="https://github.com/ghjensen/margan" class="btn btn-outline-dark">Source Code</a>
                     </div>
                 </div>
 

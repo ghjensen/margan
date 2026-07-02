@@ -1,0 +1,39 @@
+---
+layout: none
+---
+{
+  "type": "FeatureCollection",
+  "features": [
+    {%- assign features = "" -%}
+    {%- for novel in site.data.novel -%}
+      {%- comment -%} Look up the country_id(s) associated with this novel {%- endcomment -%}
+      {%- assign novel_country_entries = site.data.novel_country | where: "novel_id", novel.objectid -%}
+      
+      {%- for entry in novel_country_entries -%}
+        {%- comment -%} Find the matching country coordinates in country.csv {%- endcomment -%}
+        {%- assign country_data = site.data.country | where: "alpha-3-code", entry.country_id | first -%}
+        
+        {%- if country_data.latitude and country_data.longitude -%}
+          {%- capture feature -%}
+          {
+            "type": "Feature",
+            "geometry": {
+              "type": "Point",
+              "coordinates": [{{ country_data.longitude | strip }}, {{ country_data.latitude | strip }}]
+            },
+            "properties": {
+              "title": {{ novel.title | jsonify }},
+              "id": {{ novel.objectid | jsonify }},
+              "country": {{ country_data.country | jsonify }},
+              "significance": {{ entry.significance | jsonify }}
+            }
+          }
+          {%- endcapture -%}
+          {%- assign features = features | append: feature | append: "___" -%}
+        {%- endif -%}
+      {%- endfor -%}
+    {%- endfor -%}
+    {%- assign feature_array = features | split: "___" -%}
+    {{ feature_array | join: "," }}
+  ]
+}
