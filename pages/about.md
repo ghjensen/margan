@@ -71,6 +71,8 @@ We are grateful to the following students and individuals who assisted with data
 - Christer Næss Andreassen
 - Andreas Kalleberg
 - Rahul Mitra
+- Cael Sinclair
+- Nikita Inamdar
 
 We are also grateful to the University of Agder’s Students in research and innovation projects funding scheme for funding our student contributors and the Faculty of Humanities and Education for providing some initial project funding.
 
